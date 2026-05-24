@@ -10,7 +10,7 @@ Cloud environments fail in predictable ways: public storage, over-permissive IAM
 
 ## Current Scope
 
-- IAM baseline checks
+- IAM baseline checks, including MFA, password policy, stale access keys, direct admin attachment, and wildcard policies
 - S3 bucket exposure and hardening checks, including public ACLs, public policies, encryption, versioning, logging, and Block Public Access
 - CloudTrail logging baseline checks
 - EC2 security group exposure checks
@@ -24,7 +24,7 @@ Cloud environments fail in predictable ways: public storage, over-permissive IAM
 | --- | --- | --- |
 | 1 | CLI, finding model, demo report | A usable portfolio MVP |
 | 2 | S3 scanner | Detect public ACLs, public policies, missing encryption, missing versioning, missing access logging |
-| 3 | IAM scanner | Detect missing MFA, stale keys, wildcard policies |
+| 3 | IAM scanner | Detect missing MFA, stale keys, direct admin attachment, and wildcard policies |
 | 4 | CloudTrail scanner | Validate multi-region logging and log validation |
 | 5 | Security group scanner | Detect internet-exposed admin/database ports |
 | 6 | Remediation mode | Dry-run and safe fixes for selected issues |
