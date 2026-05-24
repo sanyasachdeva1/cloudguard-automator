@@ -1,0 +1,13 @@
+regions:
+  - us-east-1
+  - ap-south-1
+
+checks:
+  iam: true
+  s3: true
+  cloudtrail: true
+  security_groups: true
+
+thresholds:
+  stale_access_key_days: 90
+
