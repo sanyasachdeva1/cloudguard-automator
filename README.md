@@ -16,6 +16,7 @@ Cloud environments fail in predictable ways: public storage, over-permissive IAM
 - EC2 security group exposure checks, including public admin ports, public database ports, all-traffic rules, IPv6 exposure, and broad port ranges
 - Severity and risk scoring
 - JSON and Markdown reports
+- Dry-run remediation plans with AWS CLI commands and manual review guidance
 - Demo mode for portfolio screenshots without needing live AWS credentials
 
 ## Planned Roadmap
@@ -27,7 +28,7 @@ Cloud environments fail in predictable ways: public storage, over-permissive IAM
 | 3 | IAM scanner | Detect missing MFA, stale keys, direct admin attachment, and wildcard policies |
 | 4 | CloudTrail scanner | Validate multi-region logging, log validation, KMS encryption, and management events |
 | 5 | Security group scanner | Detect internet-exposed admin/database ports, all-traffic rules, IPv6 exposure, and broad ranges |
-| 6 | Remediation mode | Dry-run and safe fixes for selected issues |
+| 6 | Remediation mode | Dry-run plans with AWS CLI commands and manual review guidance |
 | 7 | Vulnerable AWS lab | Terraform lab for repeatable demos |
 
 ## Quick Start
@@ -48,6 +49,12 @@ Run against AWS credentials configured in your environment:
 
 ```bash
 cloudguard scan --profile default --regions us-east-1 ap-south-1 --format json
+```
+
+Generate a dry-run remediation plan:
+
+```bash
+cloudguard remediate --demo --dry-run --format markdown --output reports/demo_remediation.md
 ```
 
 ## Example Finding
