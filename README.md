@@ -10,6 +10,19 @@ The goal is to build a practical CSPM-style toolkit that can run in demo mode or
 
 Cloud environments fail in predictable ways: public storage, over-permissive IAM, missing logging, and exposed network services. This toolkit turns those risks into repeatable checks that can be run from a terminal, CI job, or security workflow.
 
+## How This Is Different
+
+CloudGuard Automator is intentionally not a replacement for mature tools like Prowler, ScoutSuite, CloudSplaining, or AWS Security Hub. Instead, it is a focused portfolio-grade implementation that demonstrates how cloud security posture automation works end to end.
+
+What makes this project distinct:
+
+- Small, readable codebase focused on core AWS risks instead of broad multi-cloud coverage
+- End-to-end workflow: vulnerable Terraform lab, scanner, findings, reports, and dry-run remediation
+- Demo mode for review without AWS credentials
+- Control mappings surfaced directly in reports
+- Least-privilege scanner permissions documented for safe live usage
+- HTML and Markdown reports designed for portfolio and demo review
+
 ## Implemented Capabilities
 
 - IAM baseline checks for MFA, password policy, stale access keys, direct admin attachment, and wildcard policies
