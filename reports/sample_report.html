@@ -65,6 +65,24 @@
     .metric span { display: block; color: var(--muted); font-size: 13px; }
     .metric strong { display: block; font-size: 24px; }
     .finding { margin-bottom: 12px; }
+    .priorities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .priority {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+    }
+    .priority span {
+      display: inline-block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .priority p { margin-bottom: 0; }
     .badge {
       display: inline-block;
       padding: 3px 8px;
@@ -102,6 +120,7 @@
       header { display: block; }
       .score { margin-top: 16px; text-align: left; }
       .grid { grid-template-columns: repeat(2, 1fr); }
+      .priorities { grid-template-columns: 1fr; }
       dl { grid-template-columns: 1fr; }
     }
   </style>
@@ -131,6 +150,27 @@
       </div>
     </section>
 
+    <section aria-labelledby="priorities">
+      <h2 id="priorities">Top Remediation Priorities</h2>
+      <div class="priorities">
+        <div class="priority">
+  <span>Priority 1 - Critical</span>
+  <h3>Security group exposes SSH to the internet</h3>
+  <p>Restrict SSH access to trusted IP ranges or use AWS Systems Manager Session Manager.</p>
+</div>
+<div class="priority">
+  <span>Priority 2 - High</span>
+  <h3>S3 bucket &quot;company-backups&quot; does not block public access</h3>
+  <p>Enable S3 Block Public Access for the bucket and review the bucket policy.</p>
+</div>
+<div class="priority">
+  <span>Priority 3 - High</span>
+  <h3>IAM user &quot;backup-admin&quot; has console access without MFA</h3>
+  <p>Require MFA for the user or migrate access to a role-based workflow.</p>
+</div>
+      </div>
+    </section>
+
     <section aria-labelledby="findings">
       <h2 id="findings">Findings</h2>
       <article class="finding">
@@ -141,6 +181,7 @@
     <dt>Service</dt><dd><code>s3</code></dd>
     <dt>Resource</dt><dd><code>company-backups</code></dd>
     <dt>Region</dt><dd><code>global</code></dd>
+    <dt>Controls</dt><dd>CIS AWS 2.x, NIST PR.DS, AWS Security Pillar Data Protection</dd>
     <dt>Description</dt><dd>The bucket does not have all S3 Block Public Access controls enabled.</dd>
     <dt>Remediation</dt><dd>Enable S3 Block Public Access for the bucket and review the bucket policy.</dd>
   </dl>
@@ -153,6 +194,7 @@
     <dt>Service</dt><dd><code>iam</code></dd>
     <dt>Resource</dt><dd><code>backup-admin</code></dd>
     <dt>Region</dt><dd><code>global</code></dd>
+    <dt>Controls</dt><dd>CIS AWS 1.x, NIST PR.AC, AWS Security Pillar IAM</dd>
     <dt>Description</dt><dd>Console users without MFA are more exposed to credential theft and account takeover.</dd>
     <dt>Remediation</dt><dd>Require MFA for the user or migrate access to a role-based workflow.</dd>
   </dl>
@@ -165,6 +207,7 @@
     <dt>Service</dt><dd><code>ec2</code></dd>
     <dt>Resource</dt><dd><code>sg-0123456789abcdef0</code></dd>
     <dt>Region</dt><dd><code>us-east-1</code></dd>
+    <dt>Controls</dt><dd>CIS AWS 4.x, NIST PR.AC, AWS Security Pillar Infrastructure Protection</dd>
     <dt>Description</dt><dd>Port 22 is reachable from 0.0.0.0/0.</dd>
     <dt>Remediation</dt><dd>Restrict SSH access to trusted IP ranges or use AWS Systems Manager Session Manager.</dd>
   </dl>

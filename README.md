@@ -68,6 +68,7 @@ CloudGuard Automator includes lightweight control mapping and AWS permission gui
 
 - [Control mapping](docs/control_mapping.md)
 - [AWS permissions for scanner use](docs/aws_permissions.md)
+- [Live scan validation checklist](docs/live_scan_validation.md)
 
 ## Tests
 

@@ -22,6 +22,7 @@
 - Service: `s3`
 - Resource: `company-backups`
 - Region: `global`
+- Control refs: `CIS AWS 2.x`, `NIST PR.DS`, `AWS Security Pillar Data Protection`
 - Description: The bucket does not have all S3 Block Public Access controls enabled.
 - Remediation: Enable S3 Block Public Access for the bucket and review the bucket policy.
 
@@ -31,6 +32,7 @@
 - Service: `iam`
 - Resource: `backup-admin`
 - Region: `global`
+- Control refs: `CIS AWS 1.x`, `NIST PR.AC`, `AWS Security Pillar IAM`
 - Description: Console users without MFA are more exposed to credential theft and account takeover.
 - Remediation: Require MFA for the user or migrate access to a role-based workflow.
 
@@ -40,6 +42,6 @@
 - Service: `ec2`
 - Resource: `sg-0123456789abcdef0`
 - Region: `us-east-1`
+- Control refs: `CIS AWS 4.x`, `NIST PR.AC`, `AWS Security Pillar Infrastructure Protection`
 - Description: Port 22 is reachable from 0.0.0.0/0.
 - Remediation: Restrict SSH access to trusted IP ranges or use AWS Systems Manager Session Manager.
-

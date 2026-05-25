@@ -42,6 +42,7 @@ def render_markdown(findings: list[Finding]) -> str:
         return "\n".join(lines)
 
     for finding in findings:
+        controls = ", ".join(f"`{control}`" for control in finding.control_refs) or "Not mapped"
         lines.extend(
             [
                 f"### {finding.severity.value.upper()}: {finding.title}",
@@ -50,6 +51,7 @@ def render_markdown(findings: list[Finding]) -> str:
                 f"- Service: `{finding.service}`",
                 f"- Resource: `{finding.resource}`",
                 f"- Region: `{finding.region}`",
+                f"- Control refs: {controls}",
                 f"- Description: {finding.description}",
                 f"- Remediation: {finding.remediation}",
                 "",
@@ -62,6 +64,9 @@ def render_markdown(findings: list[Finding]) -> str:
 def render_html(findings: list[Finding]) -> str:
     summary = summarize_findings(findings)
     counts = summary["counts"]
+    priority_rows = "\n".join(_render_priority_item(finding, index) for index, finding in enumerate(_top_priorities(findings), start=1))
+    if not priority_rows:
+        priority_rows = '<p class="empty">No remediation priorities generated.</p>'
     finding_rows = "\n".join(_render_finding_card(finding) for finding in findings)
     if not finding_rows:
         finding_rows = '<p class="empty">No findings detected.</p>'
@@ -133,6 +138,24 @@ def render_html(findings: list[Finding]) -> str:
     .metric span {{ display: block; color: var(--muted); font-size: 13px; }}
     .metric strong {{ display: block; font-size: 24px; }}
     .finding {{ margin-bottom: 12px; }}
+    .priorities {{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }}
+    .priority {{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+    }}
+    .priority span {{
+      display: inline-block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }}
+    .priority p {{ margin-bottom: 0; }}
     .badge {{
       display: inline-block;
       padding: 3px 8px;
@@ -170,6 +193,7 @@ def render_html(findings: list[Finding]) -> str:
       header {{ display: block; }}
       .score {{ margin-top: 16px; text-align: left; }}
       .grid {{ grid-template-columns: repeat(2, 1fr); }}
+      .priorities {{ grid-template-columns: 1fr; }}
       dl {{ grid-template-columns: 1fr; }}
     }}
   </style>
@@ -199,6 +223,13 @@ def render_html(findings: list[Finding]) -> str:
       </div>
     </section>
 
+    <section aria-labelledby="priorities">
+      <h2 id="priorities">Top Remediation Priorities</h2>
+      <div class="priorities">
+        {priority_rows}
+      </div>
+    </section>
+
     <section aria-labelledby="findings">
       <h2 id="findings">Findings</h2>
       {finding_rows}
@@ -213,8 +244,22 @@ def _render_metric(label: str, value: int) -> str:
     return f'<div class="metric"><span>{escape(label)}</span><strong>{value}</strong></div>'
 
 
+def _top_priorities(findings: list[Finding]) -> list[Finding]:
+    severity_order = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
+    return sorted(findings, key=lambda finding: severity_order[finding.severity.value])[:3]
+
+
+def _render_priority_item(finding: Finding, index: int) -> str:
+    return f"""<div class="priority">
+  <span>Priority {index} - {escape(finding.severity.value.title())}</span>
+  <h3>{escape(finding.title)}</h3>
+  <p>{escape(finding.remediation)}</p>
+</div>"""
+
+
 def _render_finding_card(finding: Finding) -> str:
     severity = escape(finding.severity.value)
+    controls = ", ".join(escape(control) for control in finding.control_refs) or "Not mapped"
     return f"""<article class="finding">
   <span class="badge {severity}">{severity}</span>
   <h3>{escape(finding.title)}</h3>
@@ -223,6 +268,7 @@ def _render_finding_card(finding: Finding) -> str:
     <dt>Service</dt><dd><code>{escape(finding.service)}</code></dd>
     <dt>Resource</dt><dd><code>{escape(finding.resource)}</code></dd>
     <dt>Region</dt><dd><code>{escape(finding.region)}</code></dd>
+    <dt>Controls</dt><dd>{controls}</dd>
     <dt>Description</dt><dd>{escape(finding.description)}</dd>
     <dt>Remediation</dt><dd>{escape(finding.remediation)}</dd>
   </dl>

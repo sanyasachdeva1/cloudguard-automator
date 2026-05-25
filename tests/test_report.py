@@ -10,3 +10,5 @@ def test_render_html_contains_summary_and_escaped_findings():
     assert "Risk Score" in html
     assert "S3_PUBLIC_ACCESS_BLOCK_DISABLED" in html
     assert "company-backups" in html
+    assert "Top Remediation Priorities" in html
+    assert "CIS AWS 2.x" in html
