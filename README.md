@@ -4,20 +4,19 @@
 
 CloudGuard Automator is a cloud security automation toolkit for auditing AWS environments for common IAM, S3, CloudTrail, and network exposure risks.
 
-The goal is to build a practical, portfolio-grade CSPM-style tool: scan an AWS account, identify risky misconfigurations, assign severity, and generate remediation-ready reports.
+The goal is to build a practical CSPM-style toolkit that can run in demo mode or against AWS credentials to identify common misconfigurations, assign severity, and generate remediation-ready reports.
 
 ## Why This Project Matters
 
 Cloud environments fail in predictable ways: public storage, over-permissive IAM, missing logging, and exposed network services. This toolkit turns those risks into repeatable checks that can be run from a terminal, CI job, or security workflow.
 
-## Current Scope
+## Implemented Capabilities
 
-- IAM baseline checks, including MFA, password policy, stale access keys, direct admin attachment, and wildcard policies
-- S3 bucket exposure and hardening checks, including public ACLs, public policies, encryption, versioning, logging, and Block Public Access
-- CloudTrail logging baseline checks, including active logging, multi-region coverage, log validation, KMS encryption, and management events
-- EC2 security group exposure checks, including public admin ports, public database ports, all-traffic rules, IPv6 exposure, and broad port ranges
-- Severity and risk scoring
-- JSON, Markdown, and HTML reports
+- IAM baseline checks for MFA, password policy, stale access keys, direct admin attachment, and wildcard policies
+- S3 exposure checks for public ACLs, public policies, missing encryption, missing versioning, missing access logging, and Block Public Access
+- CloudTrail logging baseline checks for active logging, multi-region coverage, log validation, KMS encryption, and management events
+- EC2 security group exposure checks for public admin ports, public database ports, all-traffic rules, IPv6 exposure, and broad port ranges
+- JSON, Markdown, and HTML reporting
 - Dry-run remediation plans with AWS CLI commands and manual review guidance
 - Terraform-based vulnerable AWS lab for repeatable demos
 - Demo mode for portfolio screenshots without needing live AWS credentials
@@ -57,17 +56,35 @@ Critical: 1
 High: 2
 ```
 
-## Roadmap
+## Risk Scoring
 
-| Phase | Focus | Outcome |
-| --- | --- | --- |
-| 1 | CLI, finding model, demo report | A usable portfolio MVP |
-| 2 | S3 scanner | Detect public ACLs, public policies, missing encryption, missing versioning, missing access logging |
-| 3 | IAM scanner | Detect missing MFA, stale keys, direct admin attachment, and wildcard policies |
-| 4 | CloudTrail scanner | Validate multi-region logging, log validation, KMS encryption, and management events |
-| 5 | Security group scanner | Detect internet-exposed admin/database ports, all-traffic rules, IPv6 exposure, and broad ranges |
-| 6 | Remediation mode | Dry-run plans with AWS CLI commands and manual review guidance |
-| 7 | Vulnerable AWS lab | Terraform lab for repeatable demos |
+Findings are scored by severity to create a simple account-level risk summary. Critical, high, medium, and low findings contribute weighted points, capped at 100, and the final score is grouped into informational, low, medium, high, or critical risk levels.
+
+The scoring logic lives in [cloudguard_automator/risk.py](cloudguard_automator/risk.py).
+
+## Control Mapping
+
+CloudGuard Automator includes lightweight control mapping and AWS permission guidance:
+
+- [Control mapping](docs/control_mapping.md)
+- [AWS permissions for scanner use](docs/aws_permissions.md)
+
+## Tests
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
+The test suite validates finding generation, risk scoring, report rendering, Terraform lab configuration, and remediation plan output.
+
+## Future Improvements
+
+- Security Hub and AWS Config-style compliance mapping
+- CIS AWS Foundations Benchmark coverage expansion
+- Additional services: KMS, EBS, Lambda, and RDS
+- GitHub Actions scheduled scan example
+- Optional apply mode for selected remediations
 
 ## Quick Start
 
@@ -75,13 +92,6 @@ High: 2
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
-```
-
-Install development dependencies and run tests:
-
-```bash
-pip install -e ".[dev]"
-pytest
 ```
 
 Run demo mode:
