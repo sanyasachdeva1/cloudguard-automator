@@ -2,37 +2,24 @@
 
 [![CI](https://github.com/sanyasachdeva1/cloudguard-automator/actions/workflows/ci.yml/badge.svg)](https://github.com/sanyasachdeva1/cloudguard-automator/actions/workflows/ci.yml)
 
-CloudGuard Automator is a cloud security automation toolkit for auditing AWS environments for common IAM, S3, CloudTrail, and network exposure risks.
-
-The goal is to build a practical CSPM-style toolkit that can run in demo mode or against AWS credentials to identify common misconfigurations, assign severity, and generate remediation-ready reports.
+AWS cloud security posture scanner that detects common IAM, S3, CloudTrail, and EC2 security group misconfigurations.
+It runs in demo mode or against AWS credentials, assigns severity, generates JSON/Markdown/HTML reports, and produces dry-run remediation plans.
+> Built as a portfolio-grade CSPM-style project to demonstrate cloud security automation, risk scoring, reporting, and remediation workflow design.
 
 ## Why This Project Matters
+Cloud environments often fail through predictable misconfigurations: public storage, weak IAM controls, missing logging, and exposed network services.
+This project turns those risks into repeatable security checks that can be run locally, in demo mode, or as part of a CI/security workflow.
 
-Cloud environments fail in predictable ways: public storage, over-permissive IAM, missing logging, and exposed network services. This toolkit turns those risks into repeatable checks that can be run from a terminal, CI job, or security workflow.
+## What It Checks
 
-## How This Is Different
-
-CloudGuard Automator is intentionally not a replacement for mature tools like Prowler, ScoutSuite, CloudSplaining, or AWS Security Hub. Instead, it is a focused portfolio-grade implementation that demonstrates how cloud security posture automation works end to end.
-
-What makes this project distinct:
-
-- Small, readable codebase focused on core AWS risks instead of broad multi-cloud coverage
-- End-to-end workflow: vulnerable Terraform lab, scanner, findings, reports, and dry-run remediation
-- Demo mode for review without AWS credentials
-- Control mappings surfaced directly in reports
-- Least-privilege scanner permissions documented for safe live usage
-- HTML and Markdown reports designed for portfolio and demo review
-
-## Implemented Capabilities
-
-- IAM baseline checks for MFA, password policy, stale access keys, direct admin attachment, and wildcard policies
-- S3 exposure checks for public ACLs, public policies, missing encryption, missing versioning, missing access logging, and Block Public Access
-- CloudTrail logging baseline checks for active logging, multi-region coverage, log validation, KMS encryption, and management events
-- EC2 security group exposure checks for public admin ports, public database ports, all-traffic rules, IPv6 exposure, and broad port ranges
-- JSON, Markdown, and HTML reporting
-- Dry-run remediation plans with AWS CLI commands and manual review guidance
-- Terraform-based vulnerable AWS lab for repeatable demos
-- Demo mode for portfolio screenshots without needing live AWS credentials
+| Area | Checks |
+|---|---|
+| IAM | MFA, password policy, stale access keys, admin attachment, wildcard policies |
+| S3 | Public ACLs/policies, missing encryption, missing versioning, access logging, Block Public Access |
+| CloudTrail | Active logging, multi-region trails, log validation, KMS encryption, management events |
+| EC2 Security Groups | Public admin ports, database exposure, all-traffic rules, IPv6 exposure, broad port ranges |
+| Reporting | JSON, Markdown, HTML, risk score, severity summary |
+| Remediation | Dry-run AWS CLI/manual remediation guidance |
 
 ## Architecture
 
@@ -52,6 +39,31 @@ flowchart LR
     Findings --> Remediation["Dry-run remediation plan"]
     Lab["Terraform vulnerable lab"] --> Scanner
 ```
+
+## What Makes This Different
+
+This is not a replacement for Prowler, ScoutSuite, CloudSplaining, or AWS Security Hub.
+
+It is a focused portfolio-grade implementation showing how CSPM-style automation works end to end:
+
+- Vulnerable Terraform lab
+- Python scanner
+- Normalized findings
+- Risk scoring
+- Control mapping
+- HTML/Markdown reports
+- Dry-run remediation plans
+
+## Resume Relevance
+
+This project demonstrates hands-on experience with:
+
+- AWS cloud security posture management
+- IAM, S3, CloudTrail, and network exposure checks
+- Python security automation with boto3
+- Risk scoring and remediation planning
+- Terraform-based vulnerable lab design
+- pytest and GitHub Actions CI
 
 ## Demo Preview
 
