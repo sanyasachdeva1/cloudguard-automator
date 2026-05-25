@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "AWS cloud security posture scanner and automation toolkit"
 readme = "README.md"
 requires-python = ">=3.8"
-license = "MIT"
+license = { file = "LICENSE" }
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
