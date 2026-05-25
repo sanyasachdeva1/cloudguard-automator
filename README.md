@@ -1,5 +1,7 @@
 # CloudGuard Automator
 
+[![CI](https://github.com/sanyasachdeva1/cloudguard-automator/actions/workflows/ci.yml/badge.svg)](https://github.com/sanyasachdeva1/cloudguard-automator/actions/workflows/ci.yml)
+
 CloudGuard Automator is a cloud security automation toolkit for auditing AWS environments for common IAM, S3, CloudTrail, and network exposure risks.
 
 The goal is to build a practical, portfolio-grade CSPM-style tool: scan an AWS account, identify risky misconfigurations, assign severity, and generate remediation-ready reports.
@@ -15,12 +17,47 @@ Cloud environments fail in predictable ways: public storage, over-permissive IAM
 - CloudTrail logging baseline checks, including active logging, multi-region coverage, log validation, KMS encryption, and management events
 - EC2 security group exposure checks, including public admin ports, public database ports, all-traffic rules, IPv6 exposure, and broad port ranges
 - Severity and risk scoring
-- JSON and Markdown reports
+- JSON, Markdown, and HTML reports
 - Dry-run remediation plans with AWS CLI commands and manual review guidance
 - Terraform-based vulnerable AWS lab for repeatable demos
 - Demo mode for portfolio screenshots without needing live AWS credentials
 
-## Planned Roadmap
+## Architecture
+
+```mermaid
+flowchart LR
+    CLI["CLI commands"] --> Scanner["Scan orchestrator"]
+    Scanner --> IAM["IAM checks"]
+    Scanner --> S3["S3 checks"]
+    Scanner --> CT["CloudTrail checks"]
+    Scanner --> EC2["Security group checks"]
+    IAM --> Findings["Normalized findings"]
+    S3 --> Findings
+    CT --> Findings
+    EC2 --> Findings
+    Findings --> Risk["Risk scoring"]
+    Findings --> Reports["JSON / Markdown / HTML reports"]
+    Findings --> Remediation["Dry-run remediation plan"]
+    Lab["Terraform vulnerable lab"] --> Scanner
+```
+
+## Demo Preview
+
+Sample outputs are included so the project can be reviewed without AWS credentials:
+
+![CloudGuard Automator report preview](docs/images/report-preview.svg)
+
+- [Sample Markdown report](reports/sample_report.md)
+- [Sample HTML report](reports/sample_report.html)
+
+```text
+Risk score: 55/100
+Risk level: medium
+Critical: 1
+High: 2
+```
+
+## Roadmap
 
 | Phase | Focus | Outcome |
 | --- | --- | --- |
@@ -40,10 +77,18 @@ source .venv/bin/activate
 pip install -e .
 ```
 
+Install development dependencies and run tests:
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
 Run demo mode:
 
 ```bash
 cloudguard scan --demo --format markdown --output reports/demo_report.md
+cloudguard scan --demo --format html --output reports/demo_report.html
 ```
 
 Run against AWS credentials configured in your environment:

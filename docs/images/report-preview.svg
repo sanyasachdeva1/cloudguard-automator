@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">CloudGuard Automator report preview</title>
+  <desc id="desc">A visual preview of the CloudGuard Automator HTML report with risk score, severity counts, and findings.</desc>
+  <rect width="1200" height="760" fill="#f7f9fb"/>
+  <rect x="72" y="56" width="1056" height="648" fill="#ffffff" stroke="#d8e0e8"/>
+  <text x="112" y="126" fill="#16202a" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">CloudGuard Automator Report</text>
+  <text x="112" y="164" fill="#5c6b7a" font-family="Arial, Helvetica, sans-serif" font-size="18">AWS posture findings across IAM, S3, CloudTrail, and EC2 security groups.</text>
+  <rect x="908" y="96" width="160" height="112" fill="#f7f9fb" stroke="#d8e0e8"/>
+  <text x="950" y="128" fill="#5c6b7a" font-family="Arial, Helvetica, sans-serif" font-size="16">Risk Score</text>
+  <text x="946" y="174" fill="#16202a" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">55/100</text>
+  <text x="962" y="198" fill="#16202a" font-family="Arial, Helvetica, sans-serif" font-size="16">Medium</text>
+  <line x1="112" y1="232" x2="1088" y2="232" stroke="#d8e0e8"/>
+
+  <text x="112" y="284" fill="#16202a" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Severity Counts</text>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="112" y="312" width="176" height="92" fill="#ffffff" stroke="#d8e0e8"/>
+    <text x="136" y="344" fill="#5c6b7a" font-size="15">Critical</text>
+    <text x="136" y="380" fill="#b42318" font-size="32" font-weight="700">1</text>
+    <rect x="308" y="312" width="176" height="92" fill="#ffffff" stroke="#d8e0e8"/>
+    <text x="332" y="344" fill="#5c6b7a" font-size="15">High</text>
+    <text x="332" y="380" fill="#c2410c" font-size="32" font-weight="700">2</text>
+    <rect x="504" y="312" width="176" height="92" fill="#ffffff" stroke="#d8e0e8"/>
+    <text x="528" y="344" fill="#5c6b7a" font-size="15">Medium</text>
+    <text x="528" y="380" fill="#b7791f" font-size="32" font-weight="700">0</text>
+    <rect x="700" y="312" width="176" height="92" fill="#ffffff" stroke="#d8e0e8"/>
+    <text x="724" y="344" fill="#5c6b7a" font-size="15">Low</text>
+    <text x="724" y="380" fill="#2f6f4e" font-size="32" font-weight="700">0</text>
+    <rect x="896" y="312" width="176" height="92" fill="#ffffff" stroke="#d8e0e8"/>
+    <text x="920" y="344" fill="#5c6b7a" font-size="15">Info</text>
+    <text x="920" y="380" fill="#2f5f98" font-size="32" font-weight="700">0</text>
+  </g>
+
+  <text x="112" y="462" fill="#16202a" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Findings</text>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="112" y="490" width="976" height="72" fill="#ffffff" stroke="#d8e0e8"/>
+    <rect x="136" y="514" width="72" height="24" fill="#c2410c"/>
+    <text x="152" y="531" fill="#ffffff" font-size="12" font-weight="700">HIGH</text>
+    <text x="228" y="530" fill="#16202a" font-size="17" font-weight="700">S3 bucket "company-backups" does not block public access</text>
+    <text x="228" y="550" fill="#5c6b7a" font-size="14">Enable S3 Block Public Access and review the bucket policy.</text>
+
+    <rect x="112" y="578" width="976" height="72" fill="#ffffff" stroke="#d8e0e8"/>
+    <rect x="136" y="602" width="72" height="24" fill="#c2410c"/>
+    <text x="152" y="619" fill="#ffffff" font-size="12" font-weight="700">HIGH</text>
+    <text x="228" y="618" fill="#16202a" font-size="17" font-weight="700">IAM user "backup-admin" has console access without MFA</text>
+    <text x="228" y="638" fill="#5c6b7a" font-size="14">Require MFA or migrate access to a role-based workflow.</text>
+  </g>
+</svg>

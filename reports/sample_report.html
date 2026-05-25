@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CloudGuard Automator Report</title>
+  <style>
+    :root {
+      --bg: #f7f9fb;
+      --panel: #ffffff;
+      --ink: #16202a;
+      --muted: #5c6b7a;
+      --line: #d8e0e8;
+      --critical: #b42318;
+      --high: #c2410c;
+      --medium: #b7791f;
+      --low: #2f6f4e;
+      --info: #2f5f98;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 32px auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: 32px; margin-bottom: 8px; }
+    h2 { font-size: 20px; margin-bottom: 12px; }
+    h3 { font-size: 17px; margin-bottom: 10px; }
+    .muted { color: var(--muted); }
+    .score {
+      min-width: 180px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      text-align: center;
+    }
+    .score strong { display: block; font-size: 34px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .metric, .finding {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+    }
+    .metric span { display: block; color: var(--muted); font-size: 13px; }
+    .metric strong { display: block; font-size: 24px; }
+    .finding { margin-bottom: 12px; }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 10px;
+    }
+    .critical { background: var(--critical); }
+    .high { background: var(--high); }
+    .medium { background: var(--medium); }
+    .low { background: var(--low); }
+    .info { background: var(--info); }
+    dl {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 6px 12px;
+      margin: 0;
+    }
+    dt { color: var(--muted); font-weight: 700; }
+    dd { margin: 0; }
+    code {
+      background: #edf2f7;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    .empty {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+    }
+    @media (max-width: 760px) {
+      header { display: block; }
+      .score { margin-top: 16px; text-align: left; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>CloudGuard Automator Report</h1>
+        <p class="muted">AWS security posture findings across IAM, S3, CloudTrail, and EC2 security groups.</p>
+      </div>
+      <div class="score">
+        <span class="muted">Risk Score</span>
+        <strong>55/100</strong>
+        <span>Medium</span>
+      </div>
+    </header>
+
+    <section aria-labelledby="severity-counts">
+      <h2 id="severity-counts">Severity Counts</h2>
+      <div class="grid">
+        <div class="metric"><span>Critical</span><strong>1</strong></div>
+        <div class="metric"><span>High</span><strong>2</strong></div>
+        <div class="metric"><span>Medium</span><strong>0</strong></div>
+        <div class="metric"><span>Low</span><strong>0</strong></div>
+        <div class="metric"><span>Info</span><strong>0</strong></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="findings">
+      <h2 id="findings">Findings</h2>
+      <article class="finding">
+  <span class="badge high">high</span>
+  <h3>S3 bucket &quot;company-backups&quot; does not block public access</h3>
+  <dl>
+    <dt>Check ID</dt><dd><code>S3_PUBLIC_ACCESS_BLOCK_DISABLED</code></dd>
+    <dt>Service</dt><dd><code>s3</code></dd>
+    <dt>Resource</dt><dd><code>company-backups</code></dd>
+    <dt>Region</dt><dd><code>global</code></dd>
+    <dt>Description</dt><dd>The bucket does not have all S3 Block Public Access controls enabled.</dd>
+    <dt>Remediation</dt><dd>Enable S3 Block Public Access for the bucket and review the bucket policy.</dd>
+  </dl>
+</article>
+<article class="finding">
+  <span class="badge high">high</span>
+  <h3>IAM user &quot;backup-admin&quot; has console access without MFA</h3>
+  <dl>
+    <dt>Check ID</dt><dd><code>IAM_USER_MFA_DISABLED</code></dd>
+    <dt>Service</dt><dd><code>iam</code></dd>
+    <dt>Resource</dt><dd><code>backup-admin</code></dd>
+    <dt>Region</dt><dd><code>global</code></dd>
+    <dt>Description</dt><dd>Console users without MFA are more exposed to credential theft and account takeover.</dd>
+    <dt>Remediation</dt><dd>Require MFA for the user or migrate access to a role-based workflow.</dd>
+  </dl>
+</article>
+<article class="finding">
+  <span class="badge critical">critical</span>
+  <h3>Security group exposes SSH to the internet</h3>
+  <dl>
+    <dt>Check ID</dt><dd><code>EC2_SG_ADMIN_PORT_OPEN</code></dd>
+    <dt>Service</dt><dd><code>ec2</code></dd>
+    <dt>Resource</dt><dd><code>sg-0123456789abcdef0</code></dd>
+    <dt>Region</dt><dd><code>us-east-1</code></dd>
+    <dt>Description</dt><dd>Port 22 is reachable from 0.0.0.0/0.</dd>
+    <dt>Remediation</dt><dd>Restrict SSH access to trusted IP ranges or use AWS Systems Manager Session Manager.</dd>
+  </dl>
+</article>
+    </section>
+  </main>
+</body>
+</html>
