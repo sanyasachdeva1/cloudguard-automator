@@ -1,6 +1,8 @@
 data "aws_caller_identity" "current" {}
 
-data "aws_default_vpc" "default" {}
+data "aws_vpc" "default" {
+  default = true
+}
 
 resource "random_id" "suffix" {
   byte_length = 4
@@ -54,7 +56,7 @@ resource "aws_s3_bucket_policy" "public_read" {
 resource "aws_security_group" "public_ingress" {
   name        = "${var.name_prefix}-public-ingress-${random_id.suffix.hex}"
   description = "Intentionally insecure public ingress for CloudGuard Automator demo"
-  vpc_id      = data.aws_default_vpc.default.id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     description = "Public SSH for scanner demo"
@@ -114,4 +116,3 @@ resource "aws_iam_user_policy" "wildcard_admin" {
     ]
   })
 }
-
