@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
-from typing import Any
+from datetime import datetime, timezone
+from typing import Any, Union
 
 from cloudguard_automator.models import Finding, Severity
 
@@ -53,7 +53,7 @@ def _check_console_mfa(client, username: str) -> list[Finding]:
 
 def _check_access_keys(client, username: str) -> list[Finding]:
     findings: list[Finding] = []
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
 
     for metadata in client.list_access_keys(UserName=username).get("AccessKeyMetadata", []):
         if metadata.get("Status") != "Active":
@@ -186,7 +186,7 @@ def _wildcard_policy_finding(username: str, policy_name: str, policy_type: str) 
     )
 
 
-def _policy_has_full_admin_access(policy_document: dict[str, Any] | str) -> bool:
+def _policy_has_full_admin_access(policy_document: Union[dict[str, Any], str]) -> bool:
     policy = _normalize_policy_document(policy_document)
     statements = policy.get("Statement", [])
     if isinstance(statements, dict):
@@ -201,7 +201,7 @@ def _policy_has_full_admin_access(policy_document: dict[str, Any] | str) -> bool
     return False
 
 
-def _normalize_policy_document(policy_document: dict[str, Any] | str) -> dict[str, Any]:
+def _normalize_policy_document(policy_document: Union[dict[str, Any], str]) -> dict[str, Any]:
     if isinstance(policy_document, str):
         return json.loads(policy_document)
     return policy_document
@@ -217,8 +217,8 @@ def _contains_wildcard(value: Any) -> bool:
 
 def _as_aware_datetime(value: datetime) -> datetime:
     if value.tzinfo is None:
-        return value.replace(tzinfo=UTC)
-    return value.astimezone(UTC)
+        return value.replace(tzinfo=timezone.utc)
+    return value.astimezone(timezone.utc)
 
 
 def _is_client_error(exc: Exception) -> bool:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from html import escape
 from pathlib import Path
+from typing import Optional
 
 from cloudguard_automator.models import Finding
 from cloudguard_automator.risk import summarize_findings
@@ -275,7 +276,7 @@ def _render_finding_card(finding: Finding) -> str:
 </article>"""
 
 
-def write_report(content: str, output_path: str | None) -> None:
+def write_report(content: str, output_path: Optional[str]) -> None:
     if not output_path:
         print(content)
         return

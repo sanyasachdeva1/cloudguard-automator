@@ -1,6 +1,9 @@
 # CloudGuard Automator
 
 [![CI](https://github.com/sanyasachdeva1/cloudguard-automator/actions/workflows/ci.yml/badge.svg)](https://github.com/sanyasachdeva1/cloudguard-automator/actions/workflows/ci.yml)
+![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Security Script](https://img.shields.io/badge/Security-Script-brightgreen)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 CloudGuard Automator is a cloud security automation toolkit for auditing AWS environments for common IAM, S3, CloudTrail, and network exposure risks.
 
@@ -153,3 +156,7 @@ Remediation: Enable S3 Block Public Access at the bucket or account level.
 ## Safety
 
 This project starts as a read-only scanner. Remediation features will be added behind explicit dry-run/apply flags so changes are deliberate and auditable.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

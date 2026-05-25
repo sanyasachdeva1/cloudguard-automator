@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from cloudguard_automator.checks import iam
 
@@ -9,7 +9,7 @@ class ClientError(Exception):
 
 class FakeIamClient:
     def __init__(self):
-        now = datetime.now(UTC)
+        now = datetime.now(timezone.utc)
         self.users = [{"UserName": "backup-admin"}]
         self.access_keys = [
             {
@@ -38,7 +38,7 @@ class FakeIamClient:
 
     def get_access_key_last_used(self, AccessKeyId):
         if AccessKeyId == "AKIASTALEUSED":
-            return {"AccessKeyLastUsed": {"LastUsedDate": datetime.now(UTC) - timedelta(days=121)}}
+            return {"AccessKeyLastUsed": {"LastUsedDate": datetime.now(timezone.utc) - timedelta(days=121)}}
         return {"AccessKeyLastUsed": {}}
 
     def list_attached_user_policies(self, UserName):
@@ -113,4 +113,3 @@ def test_policy_wildcard_detection_handles_lists_and_strings():
     assert not iam._policy_has_full_admin_access(
         {"Statement": {"Effect": "Allow", "Action": ["s3:GetObject"], "Resource": ["arn:aws:s3:::example/*"]}}
     )
-

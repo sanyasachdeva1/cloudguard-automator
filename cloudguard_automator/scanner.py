@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from cloudguard_automator.checks import cloudtrail, iam, s3, security_groups
 from cloudguard_automator.demo import demo_findings
 from cloudguard_automator.models import Finding
 
 
-def run_scan(profile: str | None, regions: list[str], demo: bool = False) -> list[Finding]:
+def run_scan(profile: Optional[str], regions: list[str], demo: bool = False) -> list[Finding]:
     if demo:
         return demo_findings()
 
@@ -25,4 +27,3 @@ def run_scan(profile: str | None, regions: list[str], demo: bool = False) -> lis
         findings.extend(security_groups.scan(regional_session, region))
 
     return findings
-
