@@ -11,3 +11,8 @@ reports/*.md
 !reports/.gitkeep
 !reports/sample_report.md
 .DS_Store
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars

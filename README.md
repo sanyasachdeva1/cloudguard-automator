@@ -17,6 +17,7 @@ Cloud environments fail in predictable ways: public storage, over-permissive IAM
 - Severity and risk scoring
 - JSON and Markdown reports
 - Dry-run remediation plans with AWS CLI commands and manual review guidance
+- Terraform-based vulnerable AWS lab for repeatable demos
 - Demo mode for portfolio screenshots without needing live AWS credentials
 
 ## Planned Roadmap
@@ -55,6 +56,21 @@ Generate a dry-run remediation plan:
 
 ```bash
 cloudguard remediate --demo --dry-run --format markdown --output reports/demo_remediation.md
+```
+
+Run the vulnerable AWS lab in a sandbox account:
+
+```bash
+cd terraform/lab
+terraform init
+terraform apply
+```
+
+Then scan it from the repository root:
+
+```bash
+cloudguard scan --profile default --regions us-east-1 --format markdown --output reports/lab_scan.md
+cloudguard remediate --profile default --regions us-east-1 --dry-run --format markdown --output reports/lab_remediation.md
 ```
 
 ## Example Finding
